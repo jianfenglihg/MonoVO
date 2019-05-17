@@ -59,6 +59,14 @@ map.h
 ../include/map.h
 
 /home/ljf/code/MonoVO/test/run_vo.cpp
+iostream
+-
+algorithm
+-
+chrono
+-
+iomanip
+-
 fstream
 -
 boost/timer.hpp
@@ -73,6 +81,8 @@ config.h
 /home/ljf/code/MonoVO/test/config.h
 vo.h
 /home/ljf/code/MonoVO/test/vo.h
+opencv2/core/core.hpp
+-
 
 /home/ljf/slam14/3rdparty/Sophus/sophus/se3.h
 so3.h

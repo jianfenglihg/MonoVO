@@ -1,6 +1,6 @@
 #include"frame.h"
 
-namespace myslam
+namespace slam
 {
 
 Frame::Frame()

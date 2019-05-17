@@ -180,9 +180,6 @@ monovo_LIB_DEPENDS:STATIC=general;opencv_calib3d;general;opencv_core;general;ope
 //Value Computed by CMake
 monovo_SOURCE_DIR:STATIC=/home/ljf/code/MonoVO
 
-//Dependencies for target
-myslam_LIB_DEPENDS:STATIC=
-
 
 ########################
 # INTERNAL cache entries

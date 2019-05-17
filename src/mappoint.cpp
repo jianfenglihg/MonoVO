@@ -1,6 +1,6 @@
 #include"mappoint.h"
 
-namespace myslam
+namespace slam
 {
 Mappoint::Mappoint()
 :id_(-1), point_pos_(Vector3d(0,0,0)), view_direction_(Vector3d(0,0,0)),observed_times_(0), correct_times_(0)
@@ -29,4 +29,4 @@ Mappoint::Ptr Mappoint::createPoint( Vector3d point_pos)
     return(Mappoint::Ptr(new Mappoint(point_id++, point_pos, Vector3d(0,0,0))));
 }
 
-} // myslam
+} // slam

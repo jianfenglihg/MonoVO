@@ -4,8 +4,8 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/viz.hpp> 
-#include"myslam/config.h"
-#include "myslam/vo.h"
+#include "config.h"
+#include "vo.h"
 using namespace std;
 
 

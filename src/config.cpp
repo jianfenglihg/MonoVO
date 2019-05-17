@@ -17,7 +17,7 @@
  *
  */
 
-#include "myslam/config.h"
+#include "config.h"
 
 namespace myslam 
 {

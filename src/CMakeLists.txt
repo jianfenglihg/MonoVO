@@ -1,4 +1,4 @@
-add_library( myslam SHARED
+add_library( monovo SHARED
     frame.cpp
     mappoint.cpp
     map.cpp
@@ -7,6 +7,6 @@ add_library( myslam SHARED
     vo.cpp
 )
 
-target_link_libraries( myslam
+target_link_libraries( monovo
     ${THIRD_PARTY_LIBS}
 )

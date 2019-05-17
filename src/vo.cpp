@@ -1,11 +1,11 @@
-#include"myslam/vo.h"
+#include"vo.h"
 #include<algorithm>
 #include<opencv2/highgui/highgui.hpp>
 #include<opencv2/calib3d/calib3d.hpp>
 #include<opencv2/imgproc/imgproc.hpp>
 #include<boost/timer.hpp>
 
-#include"myslam/config.h"
+#include"config.h"
 
 namespace myslam
 {

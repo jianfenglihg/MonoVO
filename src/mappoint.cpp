@@ -1,4 +1,4 @@
-#include"myslam/mappoint.h"
+#include"mappoint.h"
 
 namespace myslam
 {

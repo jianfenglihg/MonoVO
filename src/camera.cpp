@@ -1,6 +1,6 @@
-#include"myslam/camera.h"
-#include"myslam/common_include.h"
-#include"myslam/config.h"
+#include"camera.h"
+#include"common_include.h"
+#include"config.h"
 
 namespace myslam
 {

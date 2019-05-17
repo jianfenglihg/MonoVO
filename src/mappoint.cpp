@@ -22,4 +22,11 @@ Mappoint::Ptr Mappoint::createPoint()
     static long point_id = 0;
     return(Mappoint::Ptr(new Mappoint(point_id++, Vector3d(0,0,0), Vector3d(0,0,0))));
 }
+
+Mappoint::Ptr Mappoint::createPoint( Vector3d point_pos)
+{
+    static long point_id = 0;
+    return(Mappoint::Ptr(new Mappoint(point_id++, point_pos, Vector3d(0,0,0))));
+}
+
 } // myslam

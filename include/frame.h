@@ -18,6 +18,7 @@ public:
     cv::Mat rgb_, depth_;
     Camera::Ptr cam_;
     SE3 T_c_w_;
+    cv::Mat Tcw;
     double time_stamp_;
 
 public:
@@ -28,6 +29,7 @@ public:
     double findDepth(const cv::KeyPoint& kp);
     Vector3d getCameraCenter() const;
     bool isInFrame(const Vector3d& pt_world);
+    void se3ToT34();
 };
    
 }

@@ -15,8 +15,12 @@ private:
     /* data */
 public:
 typedef std::shared_ptr<Map> Ptr;
-std::unordered_map<unsigned long, Frame::Ptr> key_frames_;
-std::unordered_map<unsigned long, Mappoint::Ptr> map_points_;
+
+std::vector<Frame::Ptr> key_frames_;
+std::vector<Mappoint::Ptr> map_points_;
+
+std::unordered_map<unsigned long, Frame::Ptr> _key_frames;
+std::unordered_map<unsigned long, Mappoint::Ptr> _map_points;
 
 public:
     Map(/* args */);

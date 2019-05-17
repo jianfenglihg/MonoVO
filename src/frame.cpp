@@ -63,6 +63,9 @@ Vector3d Frame::getCameraCenter() const
     return T_c_w_.inverse().translation();
 }
 
+void Frame::se3ToT34()
+{
 
+}
 } 
 

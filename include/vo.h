@@ -13,6 +13,7 @@ private:
 public:
 typedef std::shared_ptr<Vo> Ptr;
 enum VoState {
+    UNINITIALIZED=-2,
     INITIALIZING=-1,
     LOST=0,
     NORMAL=1
@@ -24,10 +25,15 @@ Frame::Ptr cur_frame_;
 cv::Ptr<cv::ORB> orb_;
 std::vector<cv::Point3f> points_ref_3d_;
 std::vector<cv::KeyPoint> key_point_curr_;
+std::vector<cv::KeyPoint> key_point_ref_;
 cv::Mat descriptor_curr_;
 cv::Mat descriptor_ref_;
+std::vector<Mappoint::Ptr> pt3d_candinate_;
+Mat descriptor_candinate_;
 std::vector<cv::DMatch> matches_;
+std::vector<cv::DMatch> matches_map_;
 SE3 T_c_r_;
+SE3 T_c_map_;
 int num_inliers_;
 int num_lost_;
 
@@ -51,9 +57,12 @@ public:
     void extractKeyPoints();
     void computeDescriptors();
     void featureMatch();
+    void featureMatchFromMap();
     void poseEstimatePnP();
     void setRefPoint3d();
     void addKeyFrame();
+    void updateMap();
+    void epipolorSolve();
 
 bool checkEstimatedPose();
 bool checkKeyFrame();

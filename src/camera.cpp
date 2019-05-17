@@ -17,6 +17,15 @@ Camera::Camera()
 Camera::~Camera()
 {}
 
+cv::Point2f Camera::pixel2cam_cv( const cv::Point2d& p, const cv::Mat& K )
+{
+    return cv::Point2f
+    (
+        ( p.x - K.at<double>(0,2) ) / K.at<double>(0,0), 
+        ( p.y - K.at<double>(1,2) ) / K.at<double>(1,1) 
+    );
+}
+
 Vector3d Camera::pixel2cam(const Vector2d& point_image, double depth)
 {
     return Vector3d(

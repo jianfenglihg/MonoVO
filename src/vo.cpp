@@ -14,7 +14,7 @@ Vo::~Vo()
 {}
 
 Vo::Vo()
-:vo_state_(INITIALIZING), ref_frame_(nullptr), cur_frame_(nullptr), map_(new Map), num_lost_(0), num_inliers_(0)
+:vo_state_(UNINITIALIZED), ref_frame_(nullptr), cur_frame_(nullptr), map_(new Map), num_lost_(0), num_inliers_(0)
 {
     num_of_features_ = Config::get<int>("number_of_features");
     scale_factors_ = Config::get<double>("scale_factor");
@@ -33,15 +33,36 @@ bool Vo::addFrame(Frame::Ptr frame)
 {
     switch (vo_state_)
     {
+        case UNINITIALIZED:
+        {
+            cur_frame_  = frame;
+            cur_frame_->T_c_w_ = SE3(SO3(0.0, 0.0, 0.0), Vector3d( 0.0, 0.0, 0.0));
+            cur_frame_->Tcw = ( cv::Mat_<double>(3,4)<< 
+            1,0,0,0,
+            0,1,0,0,
+            0,0,1,0);
+            map_->key_frames_.push_back(cur_frame_);
+            extractKeyPoints();
+            computeDescriptors();
+            ref_frame_ = cur_frame_;
+            descriptor_ref_ = descriptor_curr_;
+            key_point_ref_ = key_point_curr_;
+            vo_state_ = INITIALIZING;
+            break;
+        }
         case INITIALIZING:
         {
-            cur_frame_ = ref_frame_ = frame;
-            map_->insertKeyFrame(frame);
+            cur_frame_ = frame;
             //std::cout<<"insert key frame have done!"<<std::endl;
             extractKeyPoints();
-            //std::cout<<"extract key point have done!"<<std::endl;
             computeDescriptors();
-            setRefPoint3d();
+            featureMatch();
+            epipolorSolve();
+            cur_frame_->T_c_w_ = T_c_r_*ref_frame_->T_c_w_;
+            ref_frame_ = cur_frame_;
+            num_lost_ = 0;
+            map_->key_frames_.push_back(cur_frame_);
+            updateMap();
             vo_state_ = NORMAL;
             break;
         }
@@ -50,15 +71,17 @@ bool Vo::addFrame(Frame::Ptr frame)
             cur_frame_ = frame;
             extractKeyPoints();
             computeDescriptors();
-            featureMatch();
+            featureMatchFromMap();
             poseEstimatePnP();
             if(checkEstimatedPose() == true)
             {
-                cur_frame_->T_c_w_ = T_c_r_*ref_frame_->T_c_w_;
+                cur_frame_->T_c_w_ = T_c_map_;
                 ref_frame_ = cur_frame_;
-                setRefPoint3d();
-                num_lost_ = 0;
-                if(checkKeyFrame() == true) addKeyFrame();
+                if(checkKeyFrame() == true) 
+                {
+                    addKeyFrame();
+                    updateMap();
+                }
             }
             else
             {
@@ -85,6 +108,39 @@ void Vo::extractKeyPoints()
 void Vo::computeDescriptors()
 {
     orb_->compute(cur_frame_->rgb_,key_point_curr_,descriptor_curr_);
+}
+
+void Vo::featureMatchFromMap()
+{
+    std::vector<cv::DMatch> matches;
+    //generate candinate points3d from map;
+    for(auto iter : map_->map_points_)
+    {
+        if(cur_frame_->isInFrame(iter->point_pos_))
+        {
+            iter->observed_times_++;
+            pt3d_candinate_.push_back(iter);
+            descriptor_candinate_.push_back(iter->descriptor_);
+        }
+    }
+
+    cv::BFMatcher matcher(cv::NORM_HAMMING);
+    matcher.match(descriptor_candinate_,descriptor_curr_,matches);
+    float min_dis = std::min_element (
+                        matches.begin(), matches.end(),
+                        [] ( const cv::DMatch& m1, const cv::DMatch& m2 )
+    {
+        return m1.distance < m2.distance;
+    } )->distance;
+
+    matches_map_.clear();
+    for ( cv::DMatch& m : matches )
+    {
+        if ( m.distance <= std::max<float> ( min_dis*match_ratio_, 30.0 ) )
+        {
+            matches_map_.push_back(m);
+        }
+    }
 }
 
 void Vo::featureMatch()
@@ -129,13 +185,45 @@ void Vo::setRefPoint3d()
     }
 }
 
+void Vo::epipolorSolve()
+{
+    std::vector<cv::Point2f> points1;
+    std::vector<cv::Point2f> points2;
+    for ( int i = 0; i < ( int ) matches_.size(); i++ )
+    {
+        points1.push_back ( key_point_curr_[matches_[i].queryIdx].pt );
+        points2.push_back ( key_point_ref_[matches_[i].trainIdx].pt );
+    }
+    Mat fundmental_matrix;
+    fundmental_matrix = cv::findFundamentalMat(points1, points2, CV_FM_8POINT);
+
+    cv::Point2d principal_point ( cur_frame_->cam_->cx_, cur_frame_->cam_->cy_ );	
+    double focal_length = cur_frame_->cam_->fx_;
+    Mat essential_matrix;
+    essential_matrix = cv::findEssentialMat ( points1, points2, focal_length, principal_point );
+    
+    Mat R,rvec,t;
+    cv::recoverPose ( essential_matrix, points1, points2, R, t, focal_length, principal_point );
+    cv::Rodrigues(R,rvec);
+    T_c_r_ = SE3(
+        SO3(rvec.at<double>(0,0), rvec.at<double>(1,0), rvec.at<double>(2,0)), 
+        Vector3d( t.at<double>(0,0), t.at<double>(1,0), t.at<double>(2,0))
+    );
+    cur_frame_->Tcw = ( cv::Mat_<double>(3,4)<<
+        R.at<double>(0,0), R.at<double>(0,1), R.at<double>(0,2),t.at<double>(0,0),
+        R.at<double>(1,0), R.at<double>(1,1), R.at<double>(1,2),t.at<double>(1,0),
+        R.at<double>(2,0), R.at<double>(2,1), R.at<double>(2,2),t.at<double>(2,0)
+    );
+
+}
+
 void Vo::poseEstimatePnP()
 {
     std::vector<cv::Point3f> point3d;
     std::vector<cv::Point2f> point2d;
-    for(cv::DMatch m : matches_)
+    for(cv::DMatch m : matches_map_)
     {
-        point3d.push_back(points_ref_3d_[m.queryIdx]);
+        point3d.push_back(pt3d_candinate_[m.queryIdx]->getPositionCV());
         point2d.push_back(key_point_curr_[m.trainIdx].pt);
     }
     Mat K = ( cv::Mat_<double>(3,3)<<
@@ -143,15 +231,91 @@ void Vo::poseEstimatePnP()
         0, ref_frame_->cam_->fy_, ref_frame_->cam_->cy_,
         0,0,1
     );
-    Mat rvec, tvec, inliers;
+    Mat rvec, tvec, inliers, RR;
     cv::solvePnPRansac(point3d,point2d,K,Mat(),rvec,tvec,false,100,4.0,0.99,inliers);
     num_inliers_ = inliers.rows;
     std::cout<<"pnp inliers: "<<num_inliers_<<std::endl;
-    T_c_r_ = SE3(
+    T_c_map_ = SE3(
         SO3(rvec.at<double>(0,0), rvec.at<double>(1,0), rvec.at<double>(2,0)), 
         Vector3d( tvec.at<double>(0,0), tvec.at<double>(1,0), tvec.at<double>(2,0))
     );
+    cv::Rodrigues(rvec,RR);
+    cur_frame_->Tcw = ( cv::Mat_<double>(3,4)<<
+        RR.at<double>(0,0), RR.at<double>(0,1), RR.at<double>(0,2),tvec.at<double>(0,0),
+        RR.at<double>(1,0), RR.at<double>(1,1), RR.at<double>(1,2),tvec.at<double>(1,0),
+        RR.at<double>(2,0), RR.at<double>(2,1), RR.at<double>(2,2),tvec.at<double>(2,0)
+    );
 }
+
+void Vo::updateMap()
+{
+    std::vector<Frame::Ptr>::iterator iter;
+    iter = map_->key_frames_.end();
+    Frame::Ptr key_frame_cur, key_frame_ref;
+    key_frame_cur = (*iter);
+    key_frame_ref = (*iter--);
+
+    Mat R,t;
+
+    std::vector<cv::KeyPoint> key_frame_point_curr_;
+    std::vector<cv::KeyPoint> key_frame_point_ref_;
+    cv::Mat descriptor_frame_curr_;
+    cv::Mat descriptor_frame_ref_;
+    orb_->detect(key_frame_cur->rgb_, key_frame_point_curr_);
+    orb_->detect(key_frame_ref->rgb_, key_frame_point_ref_);
+    orb_->compute(key_frame_cur->rgb_,key_frame_point_curr_,descriptor_frame_curr_);
+    orb_->compute(key_frame_ref->rgb_,key_frame_point_ref_,descriptor_frame_ref_);
+    
+    std::vector<cv::DMatch> matches;
+    cv::BFMatcher matcher(cv::NORM_HAMMING);
+    matcher.match(descriptor_frame_ref_,descriptor_frame_curr_,matches);
+    float min_dis = std::min_element (
+                        matches.begin(), matches.end(),
+                        [] ( const cv::DMatch& m1, const cv::DMatch& m2 )
+    {
+        return m1.distance < m2.distance;
+    } )->distance;
+
+    std::vector<cv::DMatch>::iterator iter_match;
+    for ( iter_match=matches.begin(); iter_match != matches.end(); iter_match++  )
+    {
+        if ( iter_match->distance > std::max<float> ( min_dis*match_ratio_, 30.0 ) )
+        {
+            matches.erase(iter_match);
+        }
+    }
+
+    Mat K = ( cv::Mat_<double>(3,3)<<
+        ref_frame_->cam_->fx_, 0, ref_frame_->cam_->cx_,
+        0, ref_frame_->cam_->fy_, ref_frame_->cam_->cy_,
+        0,0,1
+    );
+    std::vector<cv::Point2f> pts_1, pts_2;
+    for ( cv::DMatch m:matches )
+    {
+        pts_1.push_back ( key_frame_ref->cam_->pixel2cam_cv( key_frame_point_ref_[m.queryIdx].pt, K) );
+        pts_2.push_back ( key_frame_cur->cam_->pixel2cam_cv( key_frame_point_curr_[m.trainIdx].pt, K) );
+    }
+    Mat pts_4d;
+    cv::triangulatePoints( key_frame_ref->Tcw, key_frame_cur->Tcw, pts_1, pts_2, pts_4d );
+    
+    for ( int i=0; i<pts_4d.cols; i++ )
+    {
+        Mat x = pts_4d.col(i);
+        x /= x.at<float>(3,0);
+        Vector3d point(
+            x.at<float>(0,0), 
+            x.at<float>(1,0), 
+            x.at<float>(2,0) 
+        );
+        Mappoint::Ptr p = Mappoint::createPoint(point);
+        map_->map_points_.push_back(p);     
+    }
+
+
+
+}
+
  bool Vo::checkEstimatedPose()
  {
      if ( num_inliers_ < min_inliers_ )
@@ -181,7 +345,7 @@ bool Vo::checkKeyFrame()
 void Vo::addKeyFrame()
 {
     std::cout<<"adding a key-frame"<<std::endl;
-    map_->insertKeyFrame(cur_frame_);
+    map_->key_frames_.push_back(cur_frame_);
 }
 
 }

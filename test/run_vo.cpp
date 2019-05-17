@@ -22,9 +22,9 @@ void LoadImages(const string &strSequence, vector<string> &vstrImageFilenames,
 
 int main(int argc, char **argv)
 {
-    if(argc != 3)
+    if(argc != 2)
     {
-        cerr << endl << "Usage: ./mono_kitti path_to_settings path_to_sequence" << endl;
+        cerr << endl << "Usage: ./mono_kitti path_to_settings" << endl;
         return 1;
     }
 
@@ -35,7 +35,8 @@ int main(int argc, char **argv)
     // Retrieve paths to images
     vector<string> vstrImageFilenames;
     vector<double> vTimestamps;
-    LoadImages(string(argv[3]), vstrImageFilenames, vTimestamps);
+    string dataset_dir = slam::Config::get<string> ( "dataset_dir" );
+    LoadImages(dataset_dir, vstrImageFilenames, vTimestamps);
 
     int nImages = vstrImageFilenames.size();
 

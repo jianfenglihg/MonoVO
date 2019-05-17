@@ -1,5 +1,5 @@
 #include"map.h"
-namespace myslam
+namespace slam
 {
 Map::Map()
 {}

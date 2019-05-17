@@ -1,4 +1,9 @@
 // -------------- test the visual odometry -------------
+#include<iostream>
+#include<algorithm>
+#include<chrono>
+#include<iomanip>
+
 #include <fstream>
 #include <boost/timer.hpp>
 #include <opencv2/imgcodecs.hpp>
@@ -6,46 +11,45 @@
 #include <opencv2/viz.hpp> 
 #include "config.h"
 #include "vo.h"
+
+#include<opencv2/core/core.hpp>
+
 using namespace std;
 
 
-int main ( int argc, char** argv )
+void LoadImages(const string &strSequence, vector<string> &vstrImageFilenames,
+                vector<double> &vTimestamps);
+
+int main(int argc, char **argv)
 {
-    if ( argc != 2 )
+    if(argc != 3)
     {
-        cout<<"usage: run_vo parameter_file"<<endl;
+        cerr << endl << "Usage: ./mono_kitti path_to_settings path_to_sequence" << endl;
         return 1;
     }
 
-    myslam::Config::setParameterFile ( argv[1] );
-    myslam::Vo::Ptr vo ( new myslam::Vo );
+    slam::Config::setParameterFile ( argv[1] );
+    slam::Vo::Ptr vo ( new slam::Vo );
+    vo->vo_state_ = vo->UNINITIALIZED;
 
-    string dataset_dir = myslam::Config::get<string> ( "dataset_dir" );
-    cout<<"dataset: "<<dataset_dir<<endl;
-    ifstream fin ( dataset_dir+"/associate.txt" );
-    if ( !fin )
-    {
-        cout<<"please generate the associate file called associate.txt!"<<endl;
-        return 1;
-    }
+    // Retrieve paths to images
+    vector<string> vstrImageFilenames;
+    vector<double> vTimestamps;
+    LoadImages(string(argv[3]), vstrImageFilenames, vTimestamps);
 
-    vector<string> rgb_files, depth_files;
-    vector<double> rgb_times, depth_times;
-    while ( !fin.eof() )
-    {
-        string rgb_time, rgb_file, depth_time, depth_file;
-        fin>>rgb_time>>rgb_file>>depth_time>>depth_file;
-        rgb_times.push_back ( atof ( rgb_time.c_str() ) );
-        depth_times.push_back ( atof ( depth_time.c_str() ) );
-        rgb_files.push_back ( dataset_dir+"/"+rgb_file );
-        depth_files.push_back ( dataset_dir+"/"+depth_file );
+    int nImages = vstrImageFilenames.size();
 
-        if ( fin.good() == false )
-            break;
-    }
 
-    myslam::Camera::Ptr camera ( new myslam::Camera );
-    
+    // Vector for tracking time statistics
+    vector<float> vTimesTrack;
+    vTimesTrack.resize(nImages);
+
+    std::cout << endl << "-------" << endl;
+    std::cout << "Start processing sequence ..." << endl;
+    std::cout << "Images in the sequence: " << nImages << endl << endl;
+
+    slam::Camera::Ptr camera ( new slam::Camera );
+
     // visualization
     cv::viz::Viz3d vis("Visual Odometry");
     cv::viz::WCoordinateSystem world_coor(1.0), camera_coor(0.5);
@@ -58,24 +62,31 @@ int main ( int argc, char** argv )
     vis.showWidget( "World", world_coor );
     vis.showWidget( "Camera", camera_coor );
 
-    cout<<"read total "<<rgb_files.size() <<" entries"<<endl;
-    for ( int i=0; i<rgb_files.size(); i++ )
+    cv::Mat im;
+    for(int ni=0; ni<nImages; ni++)
     {
-        Mat color = cv::imread ( rgb_files[i] );
-        Mat depth = cv::imread ( depth_files[i], -1 );
-        if ( color.data==nullptr || depth.data==nullptr )
+        // Read image from file
+        im = cv::imread(vstrImageFilenames[ni],CV_LOAD_IMAGE_UNCHANGED);
+        double tframe = vTimestamps[ni];
+
+        if(im.empty())
+        {
+            cerr << endl << "Failed to load image at: " << vstrImageFilenames[ni] << endl;
+            return 1;
+        }
+
+        if ( im.data==nullptr)
             break;
-        myslam::Frame::Ptr pFrame = myslam::Frame::createFrame();
+        slam::Frame::Ptr pFrame = slam::Frame::createFrame();
         pFrame->cam_ = camera;
-        pFrame->rgb_ = color;
-        pFrame->depth_ = depth;
-        pFrame->time_stamp_ = rgb_times[i];
+        pFrame->rgb_ = im;
+        pFrame->time_stamp_ = tframe;
 
         boost::timer timer;
         vo->addFrame( pFrame );
-        cout<<"VO costs time: "<<timer.elapsed()<<endl;
+        std::cout<<"VO costs time: "<<timer.elapsed()<<std::endl;
         
-        if ( vo->vo_state_ == myslam::Vo::LOST )
+        if ( vo->vo_state_ == slam::Vo::LOST )
             break;
         SE3 Tcw = pFrame->T_c_w_.inverse();
         
@@ -91,11 +102,42 @@ int main ( int argc, char** argv )
             )
         );
         
-        cv::imshow("image", color );
+        cv::imshow("image", im );
         cv::waitKey(1);
         vis.setWidgetPose( "Camera", M);
         vis.spinOnce(1, false);
     }
-
     return 0;
+}
+
+void LoadImages(const string &strPathToSequence, vector<string> &vstrImageFilenames, vector<double> &vTimestamps)
+{
+    ifstream fTimes;
+    string strPathTimeFile = strPathToSequence + "/times.txt";
+    fTimes.open(strPathTimeFile.c_str());
+    while(!fTimes.eof())
+    {
+        string s;
+        getline(fTimes,s);
+        if(!s.empty())
+        {
+            stringstream ss;
+            ss << s;
+            double t;
+            ss >> t;
+            vTimestamps.push_back(t);
+        }
+    }
+
+    string strPrefixLeft = strPathToSequence + "/image_0/";
+
+    const int nTimes = vTimestamps.size();
+    vstrImageFilenames.resize(nTimes);
+
+    for(int i=0; i<nTimes; i++)
+    {
+        stringstream ss;
+        ss << setfill('0') << setw(6) << i;
+        vstrImageFilenames[i] = strPrefixLeft + ss.str() + ".png";
+    }
 }

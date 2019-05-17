@@ -2,7 +2,7 @@
 #define CAMERA_H
 #include"common_include.h"
 
-namespace myslam
+namespace slam
 {
 class Camera
 {
@@ -19,7 +19,7 @@ public:
     ~Camera();
 
     cv::Point2f Camera::pixel2cam_cv( const cv::Point2d& p, const cv::Mat& K );
-    
+
     Vector3d world2cam(const SE3& T_c_w, const Vector3d& point_world);
     Vector2d cam2pixel(const Vector3d& point_camera);
     Vector3d pixel2cam(const Vector2d& point_image, double depth = 1);

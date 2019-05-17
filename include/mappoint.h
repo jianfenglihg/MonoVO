@@ -3,7 +3,7 @@
 
 #include"common_include.h"
 
-namespace myslam
+namespace slam
 {
 class Mappoint
 {
@@ -26,7 +26,7 @@ public:
     ~Mappoint();
 
     static Mappoint::Ptr createPoint();
-    static Mappoint::Ptr createPoint( Vector3d point_pos);
+    static Mappoint::Ptr createPoint( Vector3d point_poss);
 
 };
 

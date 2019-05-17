@@ -7,7 +7,7 @@
 
 #include<unordered_map>
 
-namespace myslam
+namespace slam
 {
 class Map
 {

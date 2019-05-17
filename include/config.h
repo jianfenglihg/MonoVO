@@ -22,7 +22,7 @@
 
 #include "common_include.h" 
 
-namespace myslam 
+namespace slam 
 {
 class Config
 {

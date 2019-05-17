@@ -4,7 +4,7 @@
 #include"common_include.h"
 #include"map.h"
 
-namespace myslam
+namespace slam
 {
 class Vo
 {

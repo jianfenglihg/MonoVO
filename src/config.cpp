@@ -19,7 +19,7 @@
 
 #include "config.h"
 
-namespace myslam 
+namespace slam 
 {
     
 void Config::setParameterFile( const std::string& filename )

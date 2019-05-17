@@ -7,7 +7,7 @@
 
 #include"config.h"
 
-namespace myslam
+namespace slam
 {
 
 Vo::~Vo()

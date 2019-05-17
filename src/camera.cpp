@@ -2,7 +2,7 @@
 #include"common_include.h"
 #include"config.h"
 
-namespace myslam
+namespace slam
 {
 
 Camera::Camera()

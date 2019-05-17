@@ -62,8 +62,11 @@ bool Vo::addFrame(Frame::Ptr frame)
             ref_frame_ = cur_frame_;
             num_lost_ = 0;
             map_->key_frames_.push_back(cur_frame_);
+            std::cout<<"update map begin"<<std::endl;
             updateMap();
+            std::cout<<"update map end"<<std::endl;
             vo_state_ = NORMAL;
+            std::cout<<"initializing have done!"<<std::endl;
             break;
         }
         case NORMAL:
@@ -89,6 +92,7 @@ bool Vo::addFrame(Frame::Ptr frame)
                 if(num_lost_>max_num_lost_) vo_state_ = LOST;
                 return false;
             }
+            std::cout<<"Normal have done!"<<std::endl;
             break;
         }
         case LOST:
@@ -197,6 +201,7 @@ void Vo::epipolorSolve()
     Mat fundmental_matrix;
     fundmental_matrix = cv::findFundamentalMat(points1, points2, CV_FM_8POINT);
 
+    
     cv::Point2d principal_point ( cur_frame_->cam_->cx_, cur_frame_->cam_->cy_ );	
     double focal_length = cur_frame_->cam_->fx_;
     Mat essential_matrix;
@@ -214,6 +219,7 @@ void Vo::epipolorSolve()
         R.at<double>(1,0), R.at<double>(1,1), R.at<double>(1,2),t.at<double>(1,0),
         R.at<double>(2,0), R.at<double>(2,1), R.at<double>(2,2),t.at<double>(2,0)
     );
+    std::cout<< "epipolar calculate completed" << std::endl;
 
 }
 
@@ -249,11 +255,15 @@ void Vo::poseEstimatePnP()
 
 void Vo::updateMap()
 {
+    std::cout<<"the size of key frame"<< map_->key_frames_.size()<<std::endl;
     std::vector<Frame::Ptr>::iterator iter;
-    iter = map_->key_frames_.end();
+    iter = map_->key_frames_.end()-1;
     Frame::Ptr key_frame_cur, key_frame_ref;
-    key_frame_cur = (*iter);
-    key_frame_ref = (*iter--);
+    key_frame_cur = *iter;
+    std::cout<<"get key frame 1 have done!"<<std::endl;
+    iter = iter -1 ;
+    key_frame_ref = *iter;
+    std::cout<<"get key frame have done!"<<std::endl;
 
     Mat R,t;
 
@@ -265,25 +275,28 @@ void Vo::updateMap()
     orb_->detect(key_frame_ref->rgb_, key_frame_point_ref_);
     orb_->compute(key_frame_cur->rgb_,key_frame_point_curr_,descriptor_frame_curr_);
     orb_->compute(key_frame_ref->rgb_,key_frame_point_ref_,descriptor_frame_ref_);
-    
+    std::cout<<"fp detect have done!"<<std::endl;
+
     std::vector<cv::DMatch> matches;
     cv::BFMatcher matcher(cv::NORM_HAMMING);
     matcher.match(descriptor_frame_ref_,descriptor_frame_curr_,matches);
+    std::cout<<"match_1 have done!"<<std::endl;
     float min_dis = std::min_element (
                         matches.begin(), matches.end(),
                         [] ( const cv::DMatch& m1, const cv::DMatch& m2 )
     {
         return m1.distance < m2.distance;
     } )->distance;
-
+    std::cout<<"match_2 have done!"<<std::endl;
     std::vector<cv::DMatch>::iterator iter_match;
     for ( iter_match=matches.begin(); iter_match != matches.end(); iter_match++  )
     {
-        if ( iter_match->distance > std::max<float> ( min_dis*match_ratio_, 30.0 ) )
+        if ( iter_match->distance > std::max<float> ( min_dis*match_ratio_, 300.0 ) )
         {
             matches.erase(iter_match);
         }
     }
+    std::cout<<"match have done!"<<std::endl;
 
     Mat K = ( cv::Mat_<double>(3,3)<<
         ref_frame_->cam_->fx_, 0, ref_frame_->cam_->cx_,
@@ -291,13 +304,17 @@ void Vo::updateMap()
         0,0,1
     );
     std::vector<cv::Point2f> pts_1, pts_2;
+    Mat desc;
     for ( cv::DMatch m:matches )
     {
         pts_1.push_back ( key_frame_ref->cam_->pixel2cam_cv( key_frame_point_ref_[m.queryIdx].pt, K) );
         pts_2.push_back ( key_frame_cur->cam_->pixel2cam_cv( key_frame_point_curr_[m.trainIdx].pt, K) );
+        desc.push_back(descriptor_frame_curr_.row(m.trainIdx));
     }
     Mat pts_4d;
     cv::triangulatePoints( key_frame_ref->Tcw, key_frame_cur->Tcw, pts_1, pts_2, pts_4d );
+
+    std::cout<<"triangular have done!"<<std::endl;
     
     for ( int i=0; i<pts_4d.cols; i++ )
     {
@@ -309,6 +326,7 @@ void Vo::updateMap()
             x.at<float>(2,0) 
         );
         Mappoint::Ptr p = Mappoint::createPoint(point);
+        p->descriptor_.push_back(desc.row(i));
         map_->map_points_.push_back(p);     
     }
 

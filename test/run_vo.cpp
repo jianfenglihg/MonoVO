@@ -52,6 +52,7 @@ int main(int argc, char **argv)
     slam::Camera::Ptr camera ( new slam::Camera );
 
     // visualization
+    
     cv::viz::Viz3d vis("Visual Odometry");
     cv::viz::WCoordinateSystem world_coor(1.0), camera_coor(0.5);
     cv::Point3d cam_pos( 0, -1.0, -1.0 ), cam_focal_point(0,0,0), cam_y_dir(0,1,0);
@@ -62,6 +63,7 @@ int main(int argc, char **argv)
     camera_coor.setRenderingProperty(cv::viz::LINE_WIDTH, 1.0);
     vis.showWidget( "World", world_coor );
     vis.showWidget( "Camera", camera_coor );
+    
 
     cv::Mat im;
     for(int ni=0; ni<nImages; ni++)
@@ -92,6 +94,7 @@ int main(int argc, char **argv)
         SE3 Tcw = pFrame->T_c_w_.inverse();
         
         // show the map and the camera pose 
+        
         cv::Affine3d M(
             cv::Affine3d::Mat3( 
                 Tcw.rotation_matrix()(0,0), Tcw.rotation_matrix()(0,1), Tcw.rotation_matrix()(0,2),
@@ -107,6 +110,7 @@ int main(int argc, char **argv)
         cv::waitKey(1);
         vis.setWidgetPose( "Camera", M);
         vis.spinOnce(1, false);
+        
     }
     return 0;
 }

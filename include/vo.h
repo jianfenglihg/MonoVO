@@ -3,13 +3,16 @@
 
 #include"common_include.h"
 #include"map.h"
+#include"localmap.h"
+#include <string>
 
 namespace slam
 {
+
 class Vo
 {
 private:
-    /* data */
+    Localmap::Ptr _local_map;
 public:
 typedef std::shared_ptr<Vo> Ptr;
 enum VoState {
@@ -63,9 +66,12 @@ public:
     void addKeyFrame();
     void updateMap();
     void epipolorSolve();
+    
+    bool checkEstimatedPose();
+    bool checkKeyFrame();
 
-bool checkEstimatedPose();
-bool checkKeyFrame();
+
+    int hanmingDistance(Mat str1, Mat str2);
 
 };
 

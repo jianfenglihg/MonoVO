@@ -38,6 +38,16 @@ common_include.h
 camera.h
 ../include/camera.h
 
+../include/localmap.h
+common_include.h
+../include/common_include.h
+map.h
+../include/map.h
+frame.h
+../include/frame.h
+mappoint.h
+../include/mappoint.h
+
 ../include/map.h
 common_include.h
 ../include/common_include.h
@@ -57,6 +67,10 @@ common_include.h
 ../include/common_include.h
 map.h
 ../include/map.h
+localmap.h
+../include/localmap.h
+string
+-
 
 /home/ljf/code/MonoVO/src/camera.cpp
 camera.h
@@ -73,6 +87,10 @@ config.h
 /home/ljf/code/MonoVO/src/frame.cpp
 frame.h
 /home/ljf/code/MonoVO/src/frame.h
+
+/home/ljf/code/MonoVO/src/localmap.cpp
+localmap.h
+/home/ljf/code/MonoVO/src/localmap.h
 
 /home/ljf/code/MonoVO/src/map.cpp
 map.h

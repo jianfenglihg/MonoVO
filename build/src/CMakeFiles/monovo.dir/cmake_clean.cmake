@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/monovo.dir/map.cpp.o"
   "CMakeFiles/monovo.dir/camera.cpp.o"
   "CMakeFiles/monovo.dir/config.cpp.o"
+  "CMakeFiles/monovo.dir/localmap.cpp.o"
   "CMakeFiles/monovo.dir/vo.cpp.o"
   "../../lib/libmonovo.pdb"
   "../../lib/libmonovo.so"

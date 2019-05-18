@@ -23,7 +23,7 @@ std::unordered_map<unsigned long, Frame::Ptr> _key_frames;
 std::unordered_map<unsigned long, Mappoint::Ptr> _map_points;
 
 public:
-    Map(/* args */);
+    Map();
     ~Map();
     void insertPoint(Mappoint::Ptr map_point);
     void insertKeyFrame(Frame::Ptr key_frame);

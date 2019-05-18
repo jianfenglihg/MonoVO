@@ -17,6 +17,12 @@ Mappoint::Mappoint(long id, Vector3d point_pos, Vector3d view_direction)
 
 }
 
+Mappoint::Mappoint(long id, long frame_id,Vector3d point_pos, Vector3d view_direction)
+:id_(id), _frame_id(frame_id), point_pos_(point_pos), view_direction_(view_direction),observed_times_(0), correct_times_(0)
+{
+
+}
+
 Mappoint::Ptr Mappoint::createPoint()
 {
     static long point_id = 0;
@@ -27,6 +33,12 @@ Mappoint::Ptr Mappoint::createPoint( Vector3d point_pos)
 {
     static long point_id = 0;
     return(Mappoint::Ptr(new Mappoint(point_id++, point_pos, Vector3d(0,0,0))));
+}
+
+Mappoint::Ptr Mappoint::createPoint( Vector3d point_pos, long frame_id)
+{
+    static long point_id = 0;
+    return(Mappoint::Ptr(new Mappoint(point_id++, frame_id, point_pos, Vector3d(0,0,0))));
 }
 
 } // slam

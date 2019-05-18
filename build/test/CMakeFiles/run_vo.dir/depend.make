@@ -5,6 +5,7 @@ test/CMakeFiles/run_vo.dir/run_vo.cpp.o: ../include/camera.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: ../include/common_include.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: ../include/config.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: ../include/frame.h
+test/CMakeFiles/run_vo.dir/run_vo.cpp.o: ../include/localmap.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: ../include/map.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: ../include/mappoint.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: ../include/vo.h
@@ -85,6 +86,7 @@ test/CMakeFiles/run_vo.dir/run_vo.cpp.o: /opt/ros/kinetic/include/opencv-3.3.1-d
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/imgcodecs.hpp
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/imgcodecs/imgcodecs_c.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/imgproc.hpp
+test/CMakeFiles/run_vo.dir/run_vo.cpp.o: /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/imgproc/imgproc.hpp
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/imgproc/imgproc_c.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/imgproc/types_c.h
 test/CMakeFiles/run_vo.dir/run_vo.cpp.o: /opt/ros/kinetic/include/opencv-3.3.1-dev/opencv2/ml.hpp

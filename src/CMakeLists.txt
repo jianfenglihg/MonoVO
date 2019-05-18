@@ -4,6 +4,7 @@ add_library( monovo SHARED
     map.cpp
     camera.cpp
     config.cpp
+    localmap.cpp
     vo.cpp
 )
 

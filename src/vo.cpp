@@ -14,7 +14,7 @@ Vo::~Vo()
 {}
 
 Vo::Vo()
-:vo_state_(UNINITIALIZED), ref_frame_(nullptr), cur_frame_(nullptr), map_(new Map), num_lost_(0), num_inliers_(0)
+:vo_state_(UNINITIALIZED), ref_frame_(nullptr), cur_frame_(nullptr), map_(new Map), num_lost_(0), num_inliers_(0), _local_map(new Localmap(Config::get<int>("local_map_size")))
 {
     num_of_features_ = Config::get<int>("number_of_features");
     scale_factors_ = Config::get<double>("scale_factor");
@@ -25,7 +25,6 @@ Vo::Vo()
     key_frame_min_rot_ = Config::get<double>("keyframe_rotation");
     key_frame_min_trans_ = Config::get<double>("keyframe_translation");
     orb_ = cv::ORB::create(num_of_features_, scale_factors_, level_pyramid_);
-    //orb_ = cv::ORB::create();
 }
 
 
@@ -42,6 +41,7 @@ bool Vo::addFrame(Frame::Ptr frame)
             0,1,0,0,
             0,0,1,0);
             map_->key_frames_.push_back(cur_frame_);
+            _local_map->addKeyFrame(cur_frame_);
             extractKeyPoints();
             computeDescriptors();
             ref_frame_ = cur_frame_;
@@ -62,11 +62,12 @@ bool Vo::addFrame(Frame::Ptr frame)
             ref_frame_ = cur_frame_;
             num_lost_ = 0;
             map_->key_frames_.push_back(cur_frame_);
-            std::cout<<"update map begin"<<std::endl;
+            _local_map->addKeyFrame(cur_frame_);
+            //std::cout<<"update map begin"<<std::endl;
             updateMap();
-            std::cout<<"update map end"<<std::endl;
+            //std::cout<<"update map end"<<std::endl;
             vo_state_ = NORMAL;
-            std::cout<<"initializing have done!"<<std::endl;
+            //std::cout<<"initializing have done!"<<std::endl;
             break;
         }
         case NORMAL:
@@ -84,6 +85,7 @@ bool Vo::addFrame(Frame::Ptr frame)
                 {
                     addKeyFrame();
                     updateMap();
+                    _local_map->addKeyFrame(cur_frame_);
                 }
             }
             else
@@ -92,7 +94,7 @@ bool Vo::addFrame(Frame::Ptr frame)
                 if(num_lost_>max_num_lost_) vo_state_ = LOST;
                 return false;
             }
-            std::cout<<"Normal have done!"<<std::endl;
+            //std::cout<<"Normal have done!"<<std::endl;
             break;
         }
         case LOST:
@@ -118,7 +120,7 @@ void Vo::featureMatchFromMap()
 {
     std::vector<cv::DMatch> matches;
     //generate candinate points3d from map;
-    for(auto iter : map_->map_points_)
+    for(auto iter : _local_map->map_points_)
     {
         if(cur_frame_->isInFrame(iter->point_pos_))
         {
@@ -145,6 +147,7 @@ void Vo::featureMatchFromMap()
             matches_map_.push_back(m);
         }
     }
+    std::cout<< "matches from map number: "<<matches_map_.size()<<std::endl;
 }
 
 void Vo::featureMatch()
@@ -167,7 +170,7 @@ void Vo::featureMatch()
             matches_.push_back(m);
         }
     }
-    std::cout<<"good matches: "<<matches_.size()<<std::endl;
+    //std::cout<<"good matches: "<<matches_.size()<<std::endl;
 }
 
 void Vo::setRefPoint3d()
@@ -219,7 +222,7 @@ void Vo::epipolorSolve()
         R.at<double>(1,0), R.at<double>(1,1), R.at<double>(1,2),t.at<double>(1,0),
         R.at<double>(2,0), R.at<double>(2,1), R.at<double>(2,2),t.at<double>(2,0)
     );
-    std::cout<< "epipolar calculate completed" << std::endl;
+    //std::cout<< "epipolar calculate completed" << std::endl;
 
 }
 
@@ -255,15 +258,16 @@ void Vo::poseEstimatePnP()
 
 void Vo::updateMap()
 {
-    std::cout<<"the size of key frame"<< map_->key_frames_.size()<<std::endl;
+    std::cout<<"the size of key frame:  "<< map_->key_frames_.size()<<std::endl;
+    std::cout<<"the size of map point:  "<< map_->map_points_.size()<<std::endl;
     std::vector<Frame::Ptr>::iterator iter;
     iter = map_->key_frames_.end()-1;
     Frame::Ptr key_frame_cur, key_frame_ref;
     key_frame_cur = *iter;
-    std::cout<<"get key frame 1 have done!"<<std::endl;
+    //std::cout<<"get key frame 1 have done!"<<std::endl;
     iter = iter -1 ;
     key_frame_ref = *iter;
-    std::cout<<"get key frame have done!"<<std::endl;
+    //std::cout<<"get key frame have done!"<<std::endl;
 
     Mat R,t;
 
@@ -275,28 +279,28 @@ void Vo::updateMap()
     orb_->detect(key_frame_ref->rgb_, key_frame_point_ref_);
     orb_->compute(key_frame_cur->rgb_,key_frame_point_curr_,descriptor_frame_curr_);
     orb_->compute(key_frame_ref->rgb_,key_frame_point_ref_,descriptor_frame_ref_);
-    std::cout<<"fp detect have done!"<<std::endl;
+    //std::cout<<"fp detect have done!"<<std::endl;
 
     std::vector<cv::DMatch> matches;
     cv::BFMatcher matcher(cv::NORM_HAMMING);
     matcher.match(descriptor_frame_ref_,descriptor_frame_curr_,matches);
-    std::cout<<"match_1 have done!"<<std::endl;
+    //std::cout<<"match_1 have done!"<<std::endl;
     float min_dis = std::min_element (
                         matches.begin(), matches.end(),
                         [] ( const cv::DMatch& m1, const cv::DMatch& m2 )
     {
         return m1.distance < m2.distance;
     } )->distance;
-    std::cout<<"match_2 have done!"<<std::endl;
+    //std::cout<<"match_2 have done!"<<std::endl;
     std::vector<cv::DMatch>::iterator iter_match;
     for ( iter_match=matches.begin(); iter_match != matches.end(); iter_match++  )
     {
-        if ( iter_match->distance > std::max<float> ( min_dis*match_ratio_, 300.0 ) )
+        if ( iter_match->distance > std::max<float> ( min_dis*match_ratio_, 200.0 ) )
         {
             matches.erase(iter_match);
         }
     }
-    std::cout<<"match have done!"<<std::endl;
+    //std::cout<<"match have done!"<<std::endl;
 
     Mat K = ( cv::Mat_<double>(3,3)<<
         ref_frame_->cam_->fx_, 0, ref_frame_->cam_->cx_,
@@ -305,33 +309,58 @@ void Vo::updateMap()
     );
     std::vector<cv::Point2f> pts_1, pts_2;
     Mat desc;
-    for ( cv::DMatch m:matches )
+    std::vector<int> d;
+    int dmin = 8000;
+    for ( auto m:matches )
     {
-        pts_1.push_back ( key_frame_ref->cam_->pixel2cam_cv( key_frame_point_ref_[m.queryIdx].pt, K) );
-        pts_2.push_back ( key_frame_cur->cam_->pixel2cam_cv( key_frame_point_curr_[m.trainIdx].pt, K) );
-        desc.push_back(descriptor_frame_curr_.row(m.trainIdx));
+        if(vo_state_ == NORMAL)
+        {
+            for( auto piter : _local_map->map_points_)
+            {
+                if(piter->_frame_id != key_frame_ref->id_ && piter->_frame_id != key_frame_cur->id_ )
+                {
+                    int di = hanmingDistance(piter->descriptor_.row(0),descriptor_frame_curr_.row(m.trainIdx));
+                    if(dmin > di) dmin = di;
+                }
+            }
+            if(dmin>Config::get<float>("match_ratio_inmap"))
+            {
+                pts_1.push_back ( key_frame_ref->cam_->pixel2cam_cv( key_frame_point_ref_[m.queryIdx].pt, K) );
+                pts_2.push_back ( key_frame_cur->cam_->pixel2cam_cv( key_frame_point_curr_[m.trainIdx].pt, K) );
+                desc.push_back(descriptor_frame_curr_.row(m.trainIdx));
+            }
+        }
+        else
+        {
+            pts_1.push_back ( key_frame_ref->cam_->pixel2cam_cv( key_frame_point_ref_[m.queryIdx].pt, K) );
+            pts_2.push_back ( key_frame_cur->cam_->pixel2cam_cv( key_frame_point_curr_[m.trainIdx].pt, K) );
+            desc.push_back(descriptor_frame_curr_.row(m.trainIdx));
+        }
     }
+    std::cout<< "new points number: "<<pts_1.size()<<std::endl;
     Mat pts_4d;
-    cv::triangulatePoints( key_frame_ref->Tcw, key_frame_cur->Tcw, pts_1, pts_2, pts_4d );
-
-    std::cout<<"triangular have done!"<<std::endl;
-    
-    for ( int i=0; i<pts_4d.cols; i++ )
+    if(pts_1.size() != 0)
     {
-        Mat x = pts_4d.col(i);
-        x /= x.at<float>(3,0);
-        Vector3d point(
-            x.at<float>(0,0), 
-            x.at<float>(1,0), 
-            x.at<float>(2,0) 
-        );
-        Mappoint::Ptr p = Mappoint::createPoint(point);
-        p->descriptor_.push_back(desc.row(i));
-        map_->map_points_.push_back(p);     
+        cv::triangulatePoints( key_frame_ref->Tcw, key_frame_cur->Tcw, pts_1, pts_2, pts_4d );
+
+        //std::cout<<"triangular have done!"<<std::endl;
+        
+        for ( int i=0; i<pts_4d.cols; i++ )
+        {
+            Mat x = pts_4d.col(i);
+            x /= x.at<float>(3,0);
+            Vector3d point(
+                x.at<float>(0,0), 
+                x.at<float>(1,0), 
+                x.at<float>(2,0) 
+            );
+            Mappoint::Ptr p = Mappoint::createPoint(point, key_frame_cur->id_);
+            p->descriptor_.push_back(desc.row(i));
+            map_->map_points_.push_back(p); 
+            _local_map->map_points_.push_back(p);    
+        }
     }
-
-
-
+    std::cout<<"local map point number: "<< _local_map->map_points_.size()<<std::endl;
 }
 
  bool Vo::checkEstimatedPose()
@@ -362,8 +391,21 @@ bool Vo::checkKeyFrame()
 
 void Vo::addKeyFrame()
 {
-    std::cout<<"adding a key-frame"<<std::endl;
+    //std::cout<<"adding a key-frame"<<std::endl;
     map_->key_frames_.push_back(cur_frame_);
 }
 
+int Vo::hanmingDistance(Mat str1, Mat str2) 
+{
+    if (str1.cols != str2.cols)
+        return -1;
+    int difference = 0;
+    for (int i = 0; i < str1.cols; i++) {
+        if (str1.at<uchar>(0,i) != str2.at<uchar>(0,i))
+            difference++;
+    }
+    return difference;
 }
+
+}
+

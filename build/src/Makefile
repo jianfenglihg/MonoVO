@@ -206,6 +206,33 @@ frame.cpp.s:
 	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/frame.cpp.s
 .PHONY : frame.cpp.s
 
+localmap.o: localmap.cpp.o
+
+.PHONY : localmap.o
+
+# target to build an object file
+localmap.cpp.o:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/localmap.cpp.o
+.PHONY : localmap.cpp.o
+
+localmap.i: localmap.cpp.i
+
+.PHONY : localmap.i
+
+# target to preprocess a source file
+localmap.cpp.i:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/localmap.cpp.i
+.PHONY : localmap.cpp.i
+
+localmap.s: localmap.cpp.s
+
+.PHONY : localmap.s
+
+# target to generate assembly for a file
+localmap.cpp.s:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/localmap.cpp.s
+.PHONY : localmap.cpp.s
+
 map.o: map.cpp.o
 
 .PHONY : map.o
@@ -305,6 +332,9 @@ help:
 	@echo "... frame.o"
 	@echo "... frame.i"
 	@echo "... frame.s"
+	@echo "... localmap.o"
+	@echo "... localmap.i"
+	@echo "... localmap.s"
 	@echo "... map.o"
 	@echo "... map.i"
 	@echo "... map.s"

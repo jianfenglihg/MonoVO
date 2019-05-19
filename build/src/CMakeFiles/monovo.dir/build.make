@@ -225,6 +225,54 @@ src/CMakeFiles/monovo.dir/vo.cpp.o.provides: src/CMakeFiles/monovo.dir/vo.cpp.o.
 src/CMakeFiles/monovo.dir/vo.cpp.o.provides.build: src/CMakeFiles/monovo.dir/vo.cpp.o
 
 
+src/CMakeFiles/monovo.dir/simplevo.cpp.o: src/CMakeFiles/monovo.dir/flags.make
+src/CMakeFiles/monovo.dir/simplevo.cpp.o: ../src/simplevo.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/monovo.dir/simplevo.cpp.o"
+	cd /home/ljf/code/MonoVO/build/src && g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/monovo.dir/simplevo.cpp.o -c /home/ljf/code/MonoVO/src/simplevo.cpp
+
+src/CMakeFiles/monovo.dir/simplevo.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/monovo.dir/simplevo.cpp.i"
+	cd /home/ljf/code/MonoVO/build/src && g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ljf/code/MonoVO/src/simplevo.cpp > CMakeFiles/monovo.dir/simplevo.cpp.i
+
+src/CMakeFiles/monovo.dir/simplevo.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/monovo.dir/simplevo.cpp.s"
+	cd /home/ljf/code/MonoVO/build/src && g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ljf/code/MonoVO/src/simplevo.cpp -o CMakeFiles/monovo.dir/simplevo.cpp.s
+
+src/CMakeFiles/monovo.dir/simplevo.cpp.o.requires:
+
+.PHONY : src/CMakeFiles/monovo.dir/simplevo.cpp.o.requires
+
+src/CMakeFiles/monovo.dir/simplevo.cpp.o.provides: src/CMakeFiles/monovo.dir/simplevo.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/simplevo.cpp.o.provides.build
+.PHONY : src/CMakeFiles/monovo.dir/simplevo.cpp.o.provides
+
+src/CMakeFiles/monovo.dir/simplevo.cpp.o.provides.build: src/CMakeFiles/monovo.dir/simplevo.cpp.o
+
+
+src/CMakeFiles/monovo.dir/vo_track.cpp.o: src/CMakeFiles/monovo.dir/flags.make
+src/CMakeFiles/monovo.dir/vo_track.cpp.o: ../src/vo_track.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/CMakeFiles/monovo.dir/vo_track.cpp.o"
+	cd /home/ljf/code/MonoVO/build/src && g++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/monovo.dir/vo_track.cpp.o -c /home/ljf/code/MonoVO/src/vo_track.cpp
+
+src/CMakeFiles/monovo.dir/vo_track.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/monovo.dir/vo_track.cpp.i"
+	cd /home/ljf/code/MonoVO/build/src && g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ljf/code/MonoVO/src/vo_track.cpp > CMakeFiles/monovo.dir/vo_track.cpp.i
+
+src/CMakeFiles/monovo.dir/vo_track.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/monovo.dir/vo_track.cpp.s"
+	cd /home/ljf/code/MonoVO/build/src && g++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ljf/code/MonoVO/src/vo_track.cpp -o CMakeFiles/monovo.dir/vo_track.cpp.s
+
+src/CMakeFiles/monovo.dir/vo_track.cpp.o.requires:
+
+.PHONY : src/CMakeFiles/monovo.dir/vo_track.cpp.o.requires
+
+src/CMakeFiles/monovo.dir/vo_track.cpp.o.provides: src/CMakeFiles/monovo.dir/vo_track.cpp.o.requires
+	$(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/vo_track.cpp.o.provides.build
+.PHONY : src/CMakeFiles/monovo.dir/vo_track.cpp.o.provides
+
+src/CMakeFiles/monovo.dir/vo_track.cpp.o.provides.build: src/CMakeFiles/monovo.dir/vo_track.cpp.o
+
+
 # Object files for target monovo
 monovo_OBJECTS = \
 "CMakeFiles/monovo.dir/frame.cpp.o" \
@@ -233,7 +281,9 @@ monovo_OBJECTS = \
 "CMakeFiles/monovo.dir/camera.cpp.o" \
 "CMakeFiles/monovo.dir/config.cpp.o" \
 "CMakeFiles/monovo.dir/localmap.cpp.o" \
-"CMakeFiles/monovo.dir/vo.cpp.o"
+"CMakeFiles/monovo.dir/vo.cpp.o" \
+"CMakeFiles/monovo.dir/simplevo.cpp.o" \
+"CMakeFiles/monovo.dir/vo_track.cpp.o"
 
 # External object files for target monovo
 monovo_EXTERNAL_OBJECTS =
@@ -245,6 +295,8 @@ monovo_EXTERNAL_OBJECTS =
 ../lib/libmonovo.so: src/CMakeFiles/monovo.dir/config.cpp.o
 ../lib/libmonovo.so: src/CMakeFiles/monovo.dir/localmap.cpp.o
 ../lib/libmonovo.so: src/CMakeFiles/monovo.dir/vo.cpp.o
+../lib/libmonovo.so: src/CMakeFiles/monovo.dir/simplevo.cpp.o
+../lib/libmonovo.so: src/CMakeFiles/monovo.dir/vo_track.cpp.o
 ../lib/libmonovo.so: src/CMakeFiles/monovo.dir/build.make
 ../lib/libmonovo.so: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_stitching3.so.3.3.1
 ../lib/libmonovo.so: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_superres3.so.3.3.1
@@ -293,7 +345,7 @@ monovo_EXTERNAL_OBJECTS =
 ../lib/libmonovo.so: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_imgproc3.so.3.3.1
 ../lib/libmonovo.so: /opt/ros/kinetic/lib/x86_64-linux-gnu/libopencv_core3.so.3.3.1
 ../lib/libmonovo.so: src/CMakeFiles/monovo.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX shared library ../../lib/libmonovo.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Linking CXX shared library ../../lib/libmonovo.so"
 	cd /home/ljf/code/MonoVO/build/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/monovo.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -308,6 +360,8 @@ src/CMakeFiles/monovo.dir/requires: src/CMakeFiles/monovo.dir/camera.cpp.o.requi
 src/CMakeFiles/monovo.dir/requires: src/CMakeFiles/monovo.dir/config.cpp.o.requires
 src/CMakeFiles/monovo.dir/requires: src/CMakeFiles/monovo.dir/localmap.cpp.o.requires
 src/CMakeFiles/monovo.dir/requires: src/CMakeFiles/monovo.dir/vo.cpp.o.requires
+src/CMakeFiles/monovo.dir/requires: src/CMakeFiles/monovo.dir/simplevo.cpp.o.requires
+src/CMakeFiles/monovo.dir/requires: src/CMakeFiles/monovo.dir/vo_track.cpp.o.requires
 
 .PHONY : src/CMakeFiles/monovo.dir/requires
 

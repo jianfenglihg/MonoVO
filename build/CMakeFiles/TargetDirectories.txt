@@ -3,6 +3,8 @@
 /home/ljf/code/MonoVO/build/src/CMakeFiles/edit_cache.dir
 /home/ljf/code/MonoVO/build/src/CMakeFiles/rebuild_cache.dir
 /home/ljf/code/MonoVO/build/src/CMakeFiles/monovo.dir
-/home/ljf/code/MonoVO/build/test/CMakeFiles/rebuild_cache.dir
 /home/ljf/code/MonoVO/build/test/CMakeFiles/edit_cache.dir
 /home/ljf/code/MonoVO/build/test/CMakeFiles/run_vo.dir
+/home/ljf/code/MonoVO/build/test/CMakeFiles/run_simplevo.dir
+/home/ljf/code/MonoVO/build/test/CMakeFiles/run_vo_track.dir
+/home/ljf/code/MonoVO/build/test/CMakeFiles/rebuild_cache.dir

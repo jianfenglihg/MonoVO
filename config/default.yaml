@@ -14,11 +14,11 @@ camera.depth_scale: 5000
 
 # VO paras
 # number_of_features: 500
-number_of_features: 200
+number_of_features: 2000
 scale_factor: 1.2
 local_map_size: 3
 level_pyramid: 8
-match_ratio: 1.8
+match_ratio: 1.5
 match_ratio_inmap: 15
 max_num_lost: 10
 min_inliers: 5

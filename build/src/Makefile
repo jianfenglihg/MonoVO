@@ -287,6 +287,33 @@ mappoint.cpp.s:
 	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/mappoint.cpp.s
 .PHONY : mappoint.cpp.s
 
+simplevo.o: simplevo.cpp.o
+
+.PHONY : simplevo.o
+
+# target to build an object file
+simplevo.cpp.o:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/simplevo.cpp.o
+.PHONY : simplevo.cpp.o
+
+simplevo.i: simplevo.cpp.i
+
+.PHONY : simplevo.i
+
+# target to preprocess a source file
+simplevo.cpp.i:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/simplevo.cpp.i
+.PHONY : simplevo.cpp.i
+
+simplevo.s: simplevo.cpp.s
+
+.PHONY : simplevo.s
+
+# target to generate assembly for a file
+simplevo.cpp.s:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/simplevo.cpp.s
+.PHONY : simplevo.cpp.s
+
 vo.o: vo.cpp.o
 
 .PHONY : vo.o
@@ -313,6 +340,33 @@ vo.s: vo.cpp.s
 vo.cpp.s:
 	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/vo.cpp.s
 .PHONY : vo.cpp.s
+
+vo_track.o: vo_track.cpp.o
+
+.PHONY : vo_track.o
+
+# target to build an object file
+vo_track.cpp.o:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/vo_track.cpp.o
+.PHONY : vo_track.cpp.o
+
+vo_track.i: vo_track.cpp.i
+
+.PHONY : vo_track.i
+
+# target to preprocess a source file
+vo_track.cpp.i:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/vo_track.cpp.i
+.PHONY : vo_track.cpp.i
+
+vo_track.s: vo_track.cpp.s
+
+.PHONY : vo_track.s
+
+# target to generate assembly for a file
+vo_track.cpp.s:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/vo_track.cpp.s
+.PHONY : vo_track.cpp.s
 
 # Help Target
 help:
@@ -341,9 +395,15 @@ help:
 	@echo "... mappoint.o"
 	@echo "... mappoint.i"
 	@echo "... mappoint.s"
+	@echo "... simplevo.o"
+	@echo "... simplevo.i"
+	@echo "... simplevo.s"
 	@echo "... vo.o"
 	@echo "... vo.i"
 	@echo "... vo.s"
+	@echo "... vo_track.o"
+	@echo "... vo_track.i"
+	@echo "... vo_track.s"
 .PHONY : help
 
 

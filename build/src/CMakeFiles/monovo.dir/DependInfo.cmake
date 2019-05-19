@@ -10,7 +10,9 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/ljf/code/MonoVO/src/localmap.cpp" "/home/ljf/code/MonoVO/build/src/CMakeFiles/monovo.dir/localmap.cpp.o"
   "/home/ljf/code/MonoVO/src/map.cpp" "/home/ljf/code/MonoVO/build/src/CMakeFiles/monovo.dir/map.cpp.o"
   "/home/ljf/code/MonoVO/src/mappoint.cpp" "/home/ljf/code/MonoVO/build/src/CMakeFiles/monovo.dir/mappoint.cpp.o"
+  "/home/ljf/code/MonoVO/src/simplevo.cpp" "/home/ljf/code/MonoVO/build/src/CMakeFiles/monovo.dir/simplevo.cpp.o"
   "/home/ljf/code/MonoVO/src/vo.cpp" "/home/ljf/code/MonoVO/build/src/CMakeFiles/monovo.dir/vo.cpp.o"
+  "/home/ljf/code/MonoVO/src/vo_track.cpp" "/home/ljf/code/MonoVO/build/src/CMakeFiles/monovo.dir/vo_track.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

@@ -16,6 +16,7 @@ public:
     typedef std::shared_ptr<Frame> Ptr;
     long id_;
     cv::Mat rgb_, depth_;
+    cv::Mat R_,t_;
     Camera::Ptr cam_;
     SE3 T_c_w_;
     cv::Mat Tcw;

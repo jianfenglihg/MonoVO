@@ -124,4 +124,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 set(CMAKE_DEPEND_INFO_FILES
   "src/CMakeFiles/monovo.dir/DependInfo.cmake"
   "test/CMakeFiles/run_vo.dir/DependInfo.cmake"
+  "test/CMakeFiles/run_simplevo.dir/DependInfo.cmake"
+  "test/CMakeFiles/run_vo_track.dir/DependInfo.cmake"
   )

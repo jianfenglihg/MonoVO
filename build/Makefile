@@ -136,6 +136,32 @@ run_vo/fast:
 	$(MAKE) -f test/CMakeFiles/run_vo.dir/build.make test/CMakeFiles/run_vo.dir/build
 .PHONY : run_vo/fast
 
+#=============================================================================
+# Target rules for targets named run_simplevo
+
+# Build rule for target.
+run_simplevo: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 run_simplevo
+.PHONY : run_simplevo
+
+# fast build rule for target.
+run_simplevo/fast:
+	$(MAKE) -f test/CMakeFiles/run_simplevo.dir/build.make test/CMakeFiles/run_simplevo.dir/build
+.PHONY : run_simplevo/fast
+
+#=============================================================================
+# Target rules for targets named run_vo_track
+
+# Build rule for target.
+run_vo_track: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 run_vo_track
+.PHONY : run_vo_track
+
+# fast build rule for target.
+run_vo_track/fast:
+	$(MAKE) -f test/CMakeFiles/run_vo_track.dir/build.make test/CMakeFiles/run_vo_track.dir/build
+.PHONY : run_vo_track/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -146,6 +172,8 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... monovo"
 	@echo "... run_vo"
+	@echo "... run_simplevo"
+	@echo "... run_vo_track"
 .PHONY : help
 
 

@@ -84,7 +84,7 @@ src/preinstall:
 src/CMakeFiles/monovo.dir/all:
 	$(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/depend
 	$(MAKE) -f src/CMakeFiles/monovo.dir/build.make src/CMakeFiles/monovo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target monovo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=1,2,3,4,5,6,7,8,9,10 "Built target monovo"
 .PHONY : src/CMakeFiles/monovo.dir/all
 
 # Include target in all.
@@ -94,7 +94,7 @@ all: src/CMakeFiles/monovo.dir/all
 
 # Build rule for subdir invocation for target.
 src/CMakeFiles/monovo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 8
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 10
 	$(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/monovo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 0
 .PHONY : src/CMakeFiles/monovo.dir/rule
@@ -119,11 +119,15 @@ clean: src/CMakeFiles/monovo.dir/clean
 
 # Convenience name for "all" pass in the directory.
 test/all: test/CMakeFiles/run_vo.dir/all
+test/all: test/CMakeFiles/run_simplevo.dir/all
+test/all: test/CMakeFiles/run_vo_track.dir/all
 
 .PHONY : test/all
 
 # Convenience name for "clean" pass in the directory.
 test/clean: test/CMakeFiles/run_vo.dir/clean
+test/clean: test/CMakeFiles/run_simplevo.dir/clean
+test/clean: test/CMakeFiles/run_vo_track.dir/clean
 
 .PHONY : test/clean
 
@@ -139,7 +143,7 @@ test/preinstall:
 test/CMakeFiles/run_vo.dir/all: src/CMakeFiles/monovo.dir/all
 	$(MAKE) -f test/CMakeFiles/run_vo.dir/build.make test/CMakeFiles/run_vo.dir/depend
 	$(MAKE) -f test/CMakeFiles/run_vo.dir/build.make test/CMakeFiles/run_vo.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=9,10 "Built target run_vo"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=13,14 "Built target run_vo"
 .PHONY : test/CMakeFiles/run_vo.dir/all
 
 # Include target in all.
@@ -149,7 +153,7 @@ all: test/CMakeFiles/run_vo.dir/all
 
 # Build rule for subdir invocation for target.
 test/CMakeFiles/run_vo.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 10
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 12
 	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_vo.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 0
 .PHONY : test/CMakeFiles/run_vo.dir/rule
@@ -166,6 +170,80 @@ test/CMakeFiles/run_vo.dir/clean:
 
 # clean rule for target.
 clean: test/CMakeFiles/run_vo.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/run_simplevo.dir
+
+# All Build rule for target.
+test/CMakeFiles/run_simplevo.dir/all: src/CMakeFiles/monovo.dir/all
+	$(MAKE) -f test/CMakeFiles/run_simplevo.dir/build.make test/CMakeFiles/run_simplevo.dir/depend
+	$(MAKE) -f test/CMakeFiles/run_simplevo.dir/build.make test/CMakeFiles/run_simplevo.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=11,12 "Built target run_simplevo"
+.PHONY : test/CMakeFiles/run_simplevo.dir/all
+
+# Include target in all.
+all: test/CMakeFiles/run_simplevo.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/run_simplevo.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 12
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_simplevo.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 0
+.PHONY : test/CMakeFiles/run_simplevo.dir/rule
+
+# Convenience name for target.
+run_simplevo: test/CMakeFiles/run_simplevo.dir/rule
+
+.PHONY : run_simplevo
+
+# clean rule for target.
+test/CMakeFiles/run_simplevo.dir/clean:
+	$(MAKE) -f test/CMakeFiles/run_simplevo.dir/build.make test/CMakeFiles/run_simplevo.dir/clean
+.PHONY : test/CMakeFiles/run_simplevo.dir/clean
+
+# clean rule for target.
+clean: test/CMakeFiles/run_simplevo.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target test/CMakeFiles/run_vo_track.dir
+
+# All Build rule for target.
+test/CMakeFiles/run_vo_track.dir/all: src/CMakeFiles/monovo.dir/all
+	$(MAKE) -f test/CMakeFiles/run_vo_track.dir/build.make test/CMakeFiles/run_vo_track.dir/depend
+	$(MAKE) -f test/CMakeFiles/run_vo_track.dir/build.make test/CMakeFiles/run_vo_track.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/ljf/code/MonoVO/build/CMakeFiles --progress-num=15,16 "Built target run_vo_track"
+.PHONY : test/CMakeFiles/run_vo_track.dir/all
+
+# Include target in all.
+all: test/CMakeFiles/run_vo_track.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+test/CMakeFiles/run_vo_track.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 12
+	$(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_vo_track.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ljf/code/MonoVO/build/CMakeFiles 0
+.PHONY : test/CMakeFiles/run_vo_track.dir/rule
+
+# Convenience name for target.
+run_vo_track: test/CMakeFiles/run_vo_track.dir/rule
+
+.PHONY : run_vo_track
+
+# clean rule for target.
+test/CMakeFiles/run_vo_track.dir/clean:
+	$(MAKE) -f test/CMakeFiles/run_vo_track.dir/build.make test/CMakeFiles/run_vo_track.dir/clean
+.PHONY : test/CMakeFiles/run_vo_track.dir/clean
+
+# clean rule for target.
+clean: test/CMakeFiles/run_vo_track.dir/clean
 
 .PHONY : clean
 

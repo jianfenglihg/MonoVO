@@ -56,17 +56,6 @@ CMAKE_BINARY_DIR = /home/ljf/code/MonoVO/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target rebuild_cache
-rebuild_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
-	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
-.PHONY : rebuild_cache
-
-# Special rule for the target rebuild_cache
-rebuild_cache/fast: rebuild_cache
-
-.PHONY : rebuild_cache/fast
-
 # Special rule for the target edit_cache
 edit_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
@@ -77,6 +66,17 @@ edit_cache:
 edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
+
+# Special rule for the target rebuild_cache
+rebuild_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
+	/usr/bin/cmake -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR)
+.PHONY : rebuild_cache
+
+# Special rule for the target rebuild_cache
+rebuild_cache/fast: rebuild_cache
+
+.PHONY : rebuild_cache/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -125,6 +125,63 @@ run_vo/fast:
 	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_vo.dir/build.make test/CMakeFiles/run_vo.dir/build
 .PHONY : run_vo/fast
 
+# Convenience name for target.
+test/CMakeFiles/run_simplevo.dir/rule:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_simplevo.dir/rule
+.PHONY : test/CMakeFiles/run_simplevo.dir/rule
+
+# Convenience name for target.
+run_simplevo: test/CMakeFiles/run_simplevo.dir/rule
+
+.PHONY : run_simplevo
+
+# fast build rule for target.
+run_simplevo/fast:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_simplevo.dir/build.make test/CMakeFiles/run_simplevo.dir/build
+.PHONY : run_simplevo/fast
+
+# Convenience name for target.
+test/CMakeFiles/run_vo_track.dir/rule:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f CMakeFiles/Makefile2 test/CMakeFiles/run_vo_track.dir/rule
+.PHONY : test/CMakeFiles/run_vo_track.dir/rule
+
+# Convenience name for target.
+run_vo_track: test/CMakeFiles/run_vo_track.dir/rule
+
+.PHONY : run_vo_track
+
+# fast build rule for target.
+run_vo_track/fast:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_vo_track.dir/build.make test/CMakeFiles/run_vo_track.dir/build
+.PHONY : run_vo_track/fast
+
+run_simplevo.o: run_simplevo.cpp.o
+
+.PHONY : run_simplevo.o
+
+# target to build an object file
+run_simplevo.cpp.o:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_simplevo.dir/build.make test/CMakeFiles/run_simplevo.dir/run_simplevo.cpp.o
+.PHONY : run_simplevo.cpp.o
+
+run_simplevo.i: run_simplevo.cpp.i
+
+.PHONY : run_simplevo.i
+
+# target to preprocess a source file
+run_simplevo.cpp.i:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_simplevo.dir/build.make test/CMakeFiles/run_simplevo.dir/run_simplevo.cpp.i
+.PHONY : run_simplevo.cpp.i
+
+run_simplevo.s: run_simplevo.cpp.s
+
+.PHONY : run_simplevo.s
+
+# target to generate assembly for a file
+run_simplevo.cpp.s:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_simplevo.dir/build.make test/CMakeFiles/run_simplevo.dir/run_simplevo.cpp.s
+.PHONY : run_simplevo.cpp.s
+
 run_vo.o: run_vo.cpp.o
 
 .PHONY : run_vo.o
@@ -152,18 +209,53 @@ run_vo.cpp.s:
 	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_vo.dir/build.make test/CMakeFiles/run_vo.dir/run_vo.cpp.s
 .PHONY : run_vo.cpp.s
 
+run_vo_track.o: run_vo_track.cpp.o
+
+.PHONY : run_vo_track.o
+
+# target to build an object file
+run_vo_track.cpp.o:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_vo_track.dir/build.make test/CMakeFiles/run_vo_track.dir/run_vo_track.cpp.o
+.PHONY : run_vo_track.cpp.o
+
+run_vo_track.i: run_vo_track.cpp.i
+
+.PHONY : run_vo_track.i
+
+# target to preprocess a source file
+run_vo_track.cpp.i:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_vo_track.dir/build.make test/CMakeFiles/run_vo_track.dir/run_vo_track.cpp.i
+.PHONY : run_vo_track.cpp.i
+
+run_vo_track.s: run_vo_track.cpp.s
+
+.PHONY : run_vo_track.s
+
+# target to generate assembly for a file
+run_vo_track.cpp.s:
+	cd /home/ljf/code/MonoVO/build && $(MAKE) -f test/CMakeFiles/run_vo_track.dir/build.make test/CMakeFiles/run_vo_track.dir/run_vo_track.cpp.s
+.PHONY : run_vo_track.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... run_vo"
+	@echo "... run_simplevo"
+	@echo "... run_vo_track"
+	@echo "... rebuild_cache"
+	@echo "... run_simplevo.o"
+	@echo "... run_simplevo.i"
+	@echo "... run_simplevo.s"
 	@echo "... run_vo.o"
 	@echo "... run_vo.i"
 	@echo "... run_vo.s"
+	@echo "... run_vo_track.o"
+	@echo "... run_vo_track.i"
+	@echo "... run_vo_track.s"
 .PHONY : help
 
 

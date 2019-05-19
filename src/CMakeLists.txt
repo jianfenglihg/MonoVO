@@ -6,6 +6,8 @@ add_library( monovo SHARED
     config.cpp
     localmap.cpp
     vo.cpp
+    simplevo.cpp
+    vo_track.cpp
 )
 
 target_link_libraries( monovo

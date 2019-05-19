@@ -53,6 +53,7 @@ int main(int argc, char **argv)
     slam::Camera::Ptr camera ( new slam::Camera );
 
     cv::Mat im;
+    Mat traj = Mat(600, 600, CV_8UC3, cv::Scalar(255, 255, 255));
 
     for(int ni=0; ni<nImages; ni++)
     {
@@ -93,15 +94,15 @@ int main(int argc, char **argv)
         cv::namedWindow( "Road facing camera", cv::WINDOW_AUTOSIZE );// Create a window for display.
         cv::namedWindow( "Trajectory", cv::WINDOW_AUTOSIZE );// Create a window for display.
         
-        Mat traj = Mat(600, 600, CV_8UC3, cv::Scalar(255, 255, 255));
+        
 
         int x = int(t.at<double>(0)) + 300;
         int y = int(t.at<double>(2)) + 100;
         circle(traj, cv::Point(x, y) ,1, CV_RGB(255,0,0), 2);
 
-        rectangle( traj, cv::Point(10, 30), cv::Point(550, 50), CV_RGB(0,0,0), CV_FILLED);
+        rectangle( traj, cv::Point(10, 30), cv::Point(550, 50), CV_RGB(255,255,255), CV_FILLED);
         sprintf(text, "Coordinates: x = %02fm y = %02fm z = %02fm", t.at<double>(0), t.at<double>(1), t.at<double>(2));
-        putText(traj, text, textOrg, fontFace, fontScale, cv::Scalar::all(255), thickness, 8);
+        putText(traj, text, textOrg, fontFace, fontScale, cv::Scalar::all(0), thickness, 8);
 
         imshow( "Road facing camera", im );
         imshow( "Trajectory", traj );
